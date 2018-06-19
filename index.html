@@ -1,0 +1,186 @@
+<!--<!DOCTYPE html>-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom React Component</title>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script type="text/javascript" src="js/babel.min.js"></script>
+    <script type="text/babel">
+
+        class App extends React.Component{ 
+              render(){ 
+                return(
+                    <div>
+                        <Header/>
+                        <Main/>
+                    </div>
+                ) 
+            } 
+        }
+
+        class Header extends React.Component{
+            render(){ 
+                return(
+                    <div>
+                        <h1>E-Cart Shopping</h1>
+                    </div>
+                ) 
+            }
+        } 
+
+        class Main extends React.Component{
+            constructor(){
+                super();
+                this.state={
+                    userName:null
+                }
+            }
+
+            login(event){
+                event.preventDefault();
+                console.log('Hello');
+                let userName=document.getElementById('userName').value;
+                this.setState({
+                    userName
+                });
+            }
+
+            
+            logOut=()=>{
+                let userName=null;
+                this.setState({
+                    userName
+                })
+            }
+            
+            render(){ 
+                if(this.state.userName===null || this.state.userName===undefined || this.state.userName.trim()==''){
+                    return(                    
+                        <div>
+                            <LoginForm login={this.login.bind(this)}/>
+                        </div>
+                        )    
+                    }
+                    else{
+                        return(                    
+                        <div>
+                           <RenderProducts userName={this.state.userName} logOut={this.logOut.bind(this)}/>
+                        </div>
+                        )  
+                    } 
+            }
+        }
+
+        const LoginForm=(props)=>(
+                    <div>
+                        <form onSubmit={props.login}>
+                            Username:&nbsp;<input type="text" id="userName" /><br/><br/>
+                            Password:&nbsp;&nbsp;<input type="password" /><br/><br/>
+                            <input type="submit" value="Login" />
+                        </form>
+                   </div>
+        )
+
+        class RenderProducts extends React.Component{
+            constructor(){
+                super();
+                this.state={
+                    products:[{name:'Product 1',cost:80},
+                             {name:'Product 2',cost:800},
+                             {name:'Product 3',cost:180},
+                             {name:'Product 4',cost:580}],
+                    productsInCart:[],
+                    totalCost:0
+                }
+            }
+            
+            addProductToCart(productIndex){
+                let productToBeAdded=this.state.products[productIndex];
+                let productsInCart=this.state.productsInCart;
+                productsInCart.push(productToBeAdded);
+                this.setState({
+                    productsInCart
+                })
+                this.calculateTotalCost();
+            }
+            
+            calculateTotalCost=()=>{
+                this.state.productsInCart.forEach((product)=>{
+                    let cost=product.cost;
+                    let totalCost=this.state.totalCost;
+                    totalCost=totalCost+cost;
+                    this.setState({
+                        totalCost
+                    })
+                })
+                console.log(this.state.totalCost);
+            }
+            
+            render(){
+                return(
+                    <div>
+                       <div>
+                           <h2>Welcome {this.props.userName} !</h2>
+                           <button onClick={this.props.logOut}>Log Out</button>
+                       </div>
+                       <table>
+                         <caption>Products List</caption>
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <th>Cost</th>
+                                <th>Add Product</th>
+                            </tr>
+                            {this.state.products.map((product,index)=>
+                                    <tr key={index}>
+                                        <td>{product.name}</td>
+                                        <td>{product.cost}</td>
+                                        <td><button onClick={(event)=>{event.stopPropagation();this.addProductToCart(index);}}>Add To Cart</button></td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                        <RenderProductsInCart products={this.state.productsInCart} totalCost={this.state.totalCost} />
+                    </div>
+                )
+            }
+        }
+
+        const RenderProductsInCart=(props)=>(
+                     <div>
+                        <table>
+                        <caption>Cart</caption>
+                        <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <th>Cost</th>
+                                <th>Quantity</th>
+                            </tr>
+                            {props.products.map((product,index)=>
+                                    <tr key={index}>
+                                        <td>{product.name}</td>
+                                        <td>{product.cost}</td>
+                                    </tr>
+                                )
+                            }
+                            <tr>
+                                <td><b>Total Cost</b></td>
+                                <td>{props.totalCost}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                )
+    
+        function onload() { 
+            ReactDOM.render(<App/>, document.getElementById('main')); 
+        }
+
+    </script>
+</head>
+
+<body onload="onload();" >
+    <div id="main"></div>
+</body>
+</html>
