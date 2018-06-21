@@ -1,0 +1,48 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #222;
+  padding: 5px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.output-box {
+    width: 90%;
+    padding: 8px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    text-align: right;
+}
+
+.input-box {
+    padding: 8px 20px;
+    margin: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1.5em;
+}
+
+.calculator-box {
+    background-color:grey;
+    padding: 20px;
+    margin: 50px 450px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
